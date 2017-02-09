@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="connect">Verbinden</string>
+    <string name="disconnect">Trennen</string>
+    <string name="placeholder">Platzhalter</string>
+    <string name="refresh">Aktualisieren</string>
+    <string name="connections">Verbindungen</string>
+    <string name="graphs">Graphen</string>
+    <string name="store_in_db">Speichern in DB</string>
+</resources>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Constants -->
+    <string name="app_name" translatable="false">TECO-Env BLE</string>
+    <string name="store_in_db_shared_preference" translatable="false">STORE_IN_DB_VALUE</string>
+    <string name="shared_preferences" translatable="false">SHARED_PREFERENCES</string>
+
+    <!-- Text -->
+    <string name="connect">Connect</string>
+    <string name="connections">Connections</string>
+    <string name="disconnect">Disconnect</string>
+    <string name="graphs">Graphs</string>
+    <string name="placeholder">Placeholder</string>
+    <string name="refresh">Refresh</string>
+    <string name="store_in_db">Store in DB</string>
+</resources>
