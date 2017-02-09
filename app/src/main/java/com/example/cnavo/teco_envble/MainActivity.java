@@ -43,8 +43,9 @@ public class MainActivity extends AppCompatActivity {
 
     @AfterViews
     void initViewPager() {
-        viewPageAdapter = new ViewPageAdapter(getSupportFragmentManager());
-        viewPager.setAdapter(viewPageAdapter);
+        this.viewPageAdapter = new ViewPageAdapter(getSupportFragmentManager());
+        this.viewPager.setAdapter(viewPageAdapter);
+
         DBHelper handler = new DBHelper();
         handler.createDB();
         //handler.writeDB("sensorValues temperature=23,test=8,hum=10");

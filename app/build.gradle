@@ -1,22 +1,9 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'android-apt'
+apply plugin: 'me.tatarka.retrolambda'
 
 def AAVersion = '4.2.0'
-
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
-    }
-}
-
-repositories {
-    mavenCentral()
-    mavenLocal()
-}
 
 android {
     compileSdkVersion 24
@@ -34,6 +21,10 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 

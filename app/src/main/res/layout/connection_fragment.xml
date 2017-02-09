@@ -6,7 +6,7 @@
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/floatingActionButton"
-        fabSize="mini"
+        fabSize="normal"
         srcCompat="@android:drawable/stat_sys_data_bluetooth"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -15,5 +15,15 @@
         android:layout_marginBottom="20dp"
         android:layout_marginEnd="20dp"
         android:clickable="true" />
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/connection_recycler_view"
+        android:divider="?android:attr/listDivider"
+        android:dividerHeight="2dp"
+        android:layout_marginTop="8dp" />
 
 </RelativeLayout>

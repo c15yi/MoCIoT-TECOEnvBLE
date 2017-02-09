@@ -5,5 +5,8 @@
     <item android:title="@string/store_in_db"
         android:checkable="true"
         android:checked="false"
-        android:id="@+id/main_menu_store_in_db_menu_item" />
+        android:id="@+id/main_menu_store_in_db_menu_item"
+        android:enabled="true"
+        android:visible="true"
+        android:showAsAction="never" />
 </menu>
