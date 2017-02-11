@@ -1,6 +1,7 @@
 package com.example.cnavo.teco_envble.service;
 
 import android.app.IntentService;
+import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
@@ -20,6 +21,7 @@ import android.os.Handler;
 import android.os.ParcelUuid;
 import android.util.Log;
 
+import com.example.cnavo.teco_envble.R;
 import com.example.cnavo.teco_envble.data.BLESensorDataBuilder;
 
 import java.util.ArrayList;
@@ -151,16 +153,13 @@ public class BluetoothService extends IntentService {
         return new BluetoothGattCallback() {
 
             private List<BluetoothGattCharacteristic> characteristics;
-            private List<BluetoothGattCharacteristic> valueCharacteristics;
-            private List<BluetoothGattDescriptor> descriptors;
+            private int nextRead = 0;
 
             @Override
             public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
                 if (newState == BluetoothProfile.STATE_CONNECTED) {
-                    Log.i(LOG_TAG, "Connected with device");
+                    Log.i(LOG_TAG, "Connected with " + gatt.getDevice().getName());
                     characteristics = new ArrayList<>();
-                    valueCharacteristics = new ArrayList<>();
-                    descriptors = new ArrayList<>();
                     gatt.discoverServices();
                 } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
                     if (lastDevice != null) {
@@ -170,19 +169,11 @@ public class BluetoothService extends IntentService {
             }
 
             @Override
-            public void onDescriptorRead(BluetoothGatt gatt, BluetoothGattDescriptor descriptor, int status) {
-                boolean success = gatt.setCharacteristicNotification(descriptor.getCharacteristic(), true);
-                if (success) {
-                    descriptors.add(descriptor);
+            public void onCharacteristicRead(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
+                if (status == BluetoothGatt.GATT_SUCCESS) {
+                    handleCharacteristics(characteristic);
                 }
-
-                writeDescriptor(gatt);
-            }
-
-            @Override
-            public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
-                valueCharacteristics.add(characteristic);
-                consumeCharacteristic(gatt);
+                readNextCharacteristic(gatt);
             }
 
             @Override
@@ -200,38 +191,23 @@ public class BluetoothService extends IntentService {
                         }
                     }
 
-                    setUpNextCharacteristic(gatt);
+                    readNextCharacteristic(gatt);
                 }
             }
 
-            private void setUpNextCharacteristic(BluetoothGatt gatt) {
-                UUID readUUID = UUID.fromString("00002902-0000-1000-8000-00805f9b34fb");
+            private void readNextCharacteristic(BluetoothGatt gatt) {
+                gatt.readCharacteristic(characteristics.get(nextRead));
 
-                if (characteristics.size() > 0) {
-                    BluetoothGattCharacteristic characteristic = characteristics.remove(0);
-                    gatt.readDescriptor(characteristic.getDescriptor(readUUID));
-                }
-            }
+                /*try {
+                    Thread.sleep(200);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }*/
 
-            private void writeDescriptor(BluetoothGatt gatt) {
-                if (characteristics.size() != 0) {
-                    setUpNextCharacteristic(gatt);
-                } else if (descriptors.size() > 0) {
-                    BluetoothGattDescriptor descriptor = descriptors.remove(0);
-                    descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
-                    gatt.writeDescriptor(descriptor);
-                }
-            }
+                nextRead++;
 
-            private void consumeCharacteristic(BluetoothGatt gatt) {
-                if (characteristics.size() != 0) {
-                    setUpNextCharacteristic(gatt);
-                } else if (descriptors.size() != 0) {
-                    writeDescriptor(gatt);
-                } else if (valueCharacteristics.size() > 0) {
-                    BluetoothGattCharacteristic characteristic = valueCharacteristics.remove(0);
-                    handleCharacteristics(characteristic);
-                    consumeCharacteristic(gatt);
+                if (nextRead >= characteristics.size()) {
+                    nextRead = 0;
                 }
             }
         };

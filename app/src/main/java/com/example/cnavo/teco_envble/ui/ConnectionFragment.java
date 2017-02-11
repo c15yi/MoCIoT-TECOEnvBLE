@@ -2,6 +2,7 @@ package com.example.cnavo.teco_envble.ui;
 
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
@@ -61,7 +62,7 @@ public class ConnectionFragment extends Fragment implements ListButtonClickListe
 
             this.bluetoothAdapter = manager.getAdapter();
             this.connectionListAdapter = ConnectionListAdapter.create(this);
-            BluetoothBroadcastReceiver.addConnectionListAdapter(this.connectionListAdapter);
+            BluetoothBroadcastReceiver.addConnectionList(this.connectionListAdapter);
         }
 
         initPermissions();
@@ -97,15 +98,6 @@ public class ConnectionFragment extends Fragment implements ListButtonClickListe
         getActivity().startService(intent);
     }
 
-
-    @Override
-    public void onDisconnectButtonClicked(BluetoothDevice device) {
-        Intent intent = new Intent(getActivity(), BluetoothService.class);
-        intent.setAction(BluetoothService.DISCONNECT_FROM_DEVICE);
-        intent.putExtra(BluetoothService.DEVICE, device);
-        getActivity().startService(intent);
-    }
-
     private void initPermissions() {
         List<String> tempPermissions = new ArrayList<>();
 
@@ -126,6 +118,8 @@ public class ConnectionFragment extends Fragment implements ListButtonClickListe
             String[] permissions = Arrays.copyOf(tempPermissions.toArray(), tempPermissions.size(), String[].class);
 
             requestPermissions(permissions, PERMISSION_REQUEST);
+        } else {
+            initServices();
         }
     }
 

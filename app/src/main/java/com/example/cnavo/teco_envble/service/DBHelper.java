@@ -1,5 +1,7 @@
 package com.example.cnavo.teco_envble.service;
 
+import android.content.Context;
+
 import com.example.cnavo.teco_envble.data.CardData;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -39,6 +41,9 @@ public class DBHelper implements DataChangeListener {
 
     private static DBInterface dbInterface;
     private static DBHelper dbHelper;
+
+    private static String uploadQueue = "";
+    private static int uploadQueueCounter = 0;
 
     private DBHelper() {
         Retrofit retrofit = new Retrofit.Builder()
@@ -135,7 +140,18 @@ public class DBHelper implements DataChangeListener {
 
     @Override
     public void onValueAdded(String description, DataPoint dataPoint) {
-        writeDB(DB_TABLE + " " + description + "=" + dataPoint.getY());
+        if (uploadQueueCounter == 0) {
+            uploadQueue = DB_TABLE + " ";
+        }
+        boolean valuePresent = uploadQueue.contains(description);
+
+        if (!valuePresent) {
+            uploadQueue = uploadQueue + description + "=" + dataPoint.getY();
+        }
+        if (uploadQueueCounter > 20) {
+            writeDB(uploadQueue);
+            uploadQueueCounter = 0;
+        }
     }
 
     @Override
@@ -143,7 +159,7 @@ public class DBHelper implements DataChangeListener {
 
     }
 
-    public void readFullDB() {
+    public void readFullDB () {
         readDB("select * from " + DB_TABLE);
     }
 

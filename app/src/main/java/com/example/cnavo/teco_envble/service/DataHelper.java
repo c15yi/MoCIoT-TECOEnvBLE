@@ -1,5 +1,8 @@
 package com.example.cnavo.teco_envble.service;
 
+import android.content.Context;
+import android.util.Log;
+
 import com.example.cnavo.teco_envble.data.CardData;
 import com.jjoe64.graphview.series.DataPoint;
 
@@ -12,6 +15,10 @@ import java.util.Map;
 
 public class DataHelper {
 
+    public static Map<String, CardData> getCardDates() {
+        return cardDates;
+    }
+
     private static Map<String, CardData> cardDates;
     private static DataHelper dataHelper;
 
@@ -19,7 +26,7 @@ public class DataHelper {
         cardDates = new HashMap<String, CardData>();
 
         for (Descriptions descriptions : Descriptions.values()) {
-            CardData cardData = new CardData(descriptions.toString(), "");
+            CardData cardData = new CardData(descriptions.toString());
             cardDates.put(descriptions.toString(), cardData);
         }
     }
@@ -45,14 +52,16 @@ public class DataHelper {
 
         if (Descriptions.contains(description) && cardDates.containsKey(description)) {
             tmp = cardDates.get(description);
-            tmp.addDataPoint(new DataPoint(tmp.getSeries().getHighestValueX() + 1, value), save);
+            tmp.addDataPoint(new DataPoint(tmp.getMaxX() + 1, value), save);
             cardDates.put(description, tmp);
+
+            Log.d("Value added", "Value added: " + description + " " + value);
         }
     }
 
     public void setLocalDataChangeListener(DataChangeListener dataChangeListener) {
         for (Descriptions descriptions : Descriptions.values()) {
-            CardData cardData = new CardData(descriptions.toString(), "");
+            CardData cardData = new CardData(descriptions.toString());
             cardData.setDataChangeListener(dataChangeListener);
             cardDates.put(descriptions.toString(), cardData);
         }

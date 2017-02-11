@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="connect">Verbinden</string>
+    <string name="read">Verbinden</string>
     <string name="disconnect">Trennen</string>
     <string name="placeholder">Platzhalter</string>
     <string name="refresh">Aktualisieren</string>

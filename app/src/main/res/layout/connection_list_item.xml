@@ -17,18 +17,11 @@
         android:id="@+id/connection_list_item_text_view" />
 
     <Button
-        android:text="@string/connect"
+        android:text="@string/read"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/connection_list_item_text_view"
         android:layout_alignParentEnd="true"
         android:id="@+id/connection_list_item_connect_button" />
 
-    <Button
-        android:text="@string/disconnect"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/connection_list_item_connect_button"
-        android:layout_toStartOf="@+id/connection_list_item_connect_button"
-        android:id="@+id/connection_list_item_disconnect_button" />
 </RelativeLayout>

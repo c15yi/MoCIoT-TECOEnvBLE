@@ -9,6 +9,4 @@ import android.view.View;
 
 public interface ListButtonClickListener {
     void onConnectButtonClicked(BluetoothDevice device);
-
-    void onDisconnectButtonClicked(BluetoothDevice device);
 }

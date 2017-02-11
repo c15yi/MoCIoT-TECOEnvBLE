@@ -38,6 +38,7 @@
                 <action android:name="BROADCAST_CLEAR_LIST" />
                 <action android:name="BROADCAST_ADD_DEVICE" />
                 <action android:name="BROADCAST_ADD_VALUE" />
+                <action android:name="canel_progress_dialog" />
             </intent-filter>
         </receiver>
 

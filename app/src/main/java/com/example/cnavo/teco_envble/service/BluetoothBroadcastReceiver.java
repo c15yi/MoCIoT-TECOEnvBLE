@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.example.cnavo.teco_envble.ui.ConnectionFragment;
 import com.example.cnavo.teco_envble.ui.ConnectionListAdapter;
 
 /**
@@ -19,6 +20,7 @@ public class BluetoothBroadcastReceiver extends BroadcastReceiver {
     public static final String BROADCAST_ADD_DEVICE = "BROADCAST_ADD_DEVICE";
     public static final String BROADCAST_ADD_VALUE = "BROADCAST_ADD_VALUE";
     public static final String BROADCAST_DEVICE = "BROADCAST_DEVICE";
+    public static final String CANCEL_PROGRESS_DIALOG = "cancel_progress_dialog";
 
     public static final String CO_VALUE = Descriptions.CO.toString();
     public static final String NO2_VALUE = Descriptions.NO2.toString();
@@ -33,14 +35,14 @@ public class BluetoothBroadcastReceiver extends BroadcastReceiver {
     private DataHelper dataHelper;
 
     public BluetoothBroadcastReceiver() {
-        this.dataHelper = DataHelper.getDataHelper();
+            this.dataHelper = DataHelper.getDataHelper();
     }
 
     public static BluetoothBroadcastReceiver create() {
         return new BluetoothBroadcastReceiver();
     }
 
-    public static void addConnectionListAdapter(ConnectionListAdapter adapter) {
+    public static void addConnectionList(ConnectionListAdapter adapter) {
         connectionListAdapter = adapter;
     }
 

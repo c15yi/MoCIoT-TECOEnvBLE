@@ -8,8 +8,7 @@
     <android.support.v4.view.ViewPager
         android:id="@+id/main_view_pager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:elevation="0dp">
+        android:layout_height="match_parent">
 
         <android.support.design.widget.TabLayout
             android:layout_width="match_parent"
@@ -19,17 +18,57 @@
             app:tabTextColor="@color/inactiveTabText"
             app:tabSelectedTextColor="@color/activeTabText"
             android:background="@color/colorPrimary"
-            android:elevation="0dp">
+            app:tabMode="scrollable"
+            app:tabGravity="center"
+            android:id="@+id/main_tab_layout">
 
             <android.support.design.widget.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:id="@+id/tabItem1"
                 android:text="@string/connections" />
 
             <android.support.design.widget.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/graphs" />
+                android:id="@+id/tabItem2"
+                android:text="@string/CO" />
+
+            <android.support.design.widget.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tabItem3"
+                android:text="@string/NO2" />
+
+            <android.support.design.widget.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tabItem4"
+                android:text="@string/NH3" />
+
+            <android.support.design.widget.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tabItem5"
+                android:text="@string/Temperature" />
+
+            <android.support.design.widget.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tabItem6"
+                android:text="@string/Humidity" />
+
+            <android.support.design.widget.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tabItem7"
+                android:text="@string/Pressure" />
+
+            <android.support.design.widget.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tabItem8"
+                android:text="@string/Dust" />
 
         </android.support.design.widget.TabLayout>
 

@@ -70,7 +70,6 @@ public class ConnectionListAdapter extends RecyclerView.Adapter<ConnectionListAd
 
         private TextView deviceName;
         private Button connectButton;
-        private Button disconnectButton;
         private BluetoothDevice bluetoothDevice;
         private ListButtonClickListener listButtonClickListener;
 
@@ -79,20 +78,16 @@ public class ConnectionListAdapter extends RecyclerView.Adapter<ConnectionListAd
 
             this.deviceName = (TextView) view.findViewById(R.id.connection_list_item_text_view);
             this.connectButton = (Button) view.findViewById(R.id.connection_list_item_connect_button);
-            this.disconnectButton = (Button) view.findViewById(R.id.connection_list_item_disconnect_button);
 
             this.listButtonClickListener = listButtonClickListener;
 
             this.connectButton.setOnClickListener(this);
-            this.disconnectButton.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
             if (view == this.connectButton) {
                 listButtonClickListener.onConnectButtonClicked(bluetoothDevice);
-            } else if (view == this.disconnectButton) {
-                listButtonClickListener.onDisconnectButtonClicked(bluetoothDevice);
             }
         }
     }

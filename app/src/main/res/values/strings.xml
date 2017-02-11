@@ -8,13 +8,21 @@
     <string name="BROADCAST_ADD_DEVICE">broadcast_add_device</string>
     <string name="BROADCAST_ADD_VALUE">broadcast_add_value</string>
     <string name="BROADCAST_DEVICE">broadcast_device</string>
+    <string name="CO">CO</string>
+    <string name="NO2">NO2</string>
+    <string name="NH3">NH3</string>
+    <string name="Temperature">Temperature</string>
+    <string name="Humidity">Humidity</string>
+    <string name="Pressure">Pressure</string>
+    <string name="Dust">Dust</string>
 
     <!-- Text -->
-    <string name="connect">Connect</string>
+    <string name="read">Read Sensor</string>
     <string name="connections">Connections</string>
     <string name="disconnect">Disconnect</string>
     <string name="graphs">Graphs</string>
     <string name="placeholder">Placeholder</string>
     <string name="refresh">Refresh</string>
     <string name="store_in_db">Store in DB</string>
+    <string name="connecting">Connecting to device</string>
 </resources>
