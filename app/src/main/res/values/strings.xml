@@ -4,6 +4,10 @@
     <string name="app_name" translatable="false">TECO-Env BLE</string>
     <string name="store_in_db_shared_preference" translatable="false">STORE_IN_DB_VALUE</string>
     <string name="shared_preferences" translatable="false">SHARED_PREFERENCES</string>
+    <string name="BROADCAST_CLEAR_LIST">broadcast_clear_list</string>
+    <string name="BROADCAST_ADD_DEVICE">broadcast_add_device</string>
+    <string name="BROADCAST_ADD_VALUE">broadcast_add_value</string>
+    <string name="BROADCAST_DEVICE">broadcast_device</string>
 
     <!-- Text -->
     <string name="connect">Connect</string>

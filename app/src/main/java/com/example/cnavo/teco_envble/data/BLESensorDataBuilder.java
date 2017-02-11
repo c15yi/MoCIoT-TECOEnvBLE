@@ -1,5 +1,10 @@
 package com.example.cnavo.teco_envble.data;
 
+import com.example.cnavo.teco_envble.service.BluetoothBroadcastReceiver;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by privat on 09.02.17.
  */
@@ -13,121 +18,143 @@ public class BLESensorDataBuilder {
     private Integer NH3Raw;
     private Integer NH3Calibration;
 
-    private int COValue;
-    private int NO2Value;
-    private int NH3Value;
+    public boolean CO_READY = false;
+    public boolean NO2_READY = false;
+    public boolean NH3_READY = false;
+    public boolean DUST_READY = false;
 
-    private Integer temperature;
-    private Integer humidity;
-    private Integer pressure;
+    private Double temperature;
 
-    private Integer dustRaw;
+    private List<Integer> dustValues = new ArrayList<>();
 
     public BLESensorDataBuilder setCORaw(int CORaw) {
-        this.CORaw = CORaw;
+        if (this.CORaw == null) {
+            this.CORaw = CORaw;
+        } else if (temperature != null) {
+            this.CO_READY = true;
+        }
         return this;
     }
 
     public BLESensorDataBuilder setCOCalibration(int COCalibration) {
-        this.COCalibration = COCalibration;
+        if (this.COCalibration == null) {
+            this.COCalibration = COCalibration;
+        } else if (temperature != null) {
+            this.CO_READY = true;
+        }
         return this;
     }
 
     public BLESensorDataBuilder setNO2Raw(int NO2Raw) {
-        this.NO2Raw = NO2Raw;
+        if (this.NO2Raw == null) {
+            this.NO2Raw = NO2Raw;
+        } else if (temperature != null) {
+            this.NO2_READY = true;
+        }
         return this;
     }
 
     public BLESensorDataBuilder setNO2Calibration(int NO2Calibration) {
-        this.NO2Calibration = NO2Calibration;
+        if (this.NO2Calibration == null) {
+            this.NO2Calibration = NO2Calibration;
+        } else if (temperature != null) {
+            this.NO2_READY = true;
+        }
         return this;
     }
 
     public BLESensorDataBuilder setNH3Raw(int NH3Raw) {
-        this.NH3Raw = NH3Raw;
+        if (this.NH3Raw == null) {
+            this.NH3Raw = NH3Raw;
+        } else if (temperature != null) {
+            this.NH3_READY = true;
+        }
         return this;
     }
 
     public BLESensorDataBuilder setNH3Calibration(int NH3Calibration) {
-        this.NH3Calibration = NH3Calibration;
+        if (this.NH3Calibration == null) {
+            this.NH3Calibration = NH3Calibration;
+        } else if (temperature != null) {
+            this.NH3_READY = true;
+        }
         return this;
     }
 
-    public BLESensorDataBuilder setTemperature(int temperature) {
+    public BLESensorDataBuilder setTemperature(double temperature) {
         this.temperature = temperature;
-        return this;
-    }
 
-    public BLESensorDataBuilder setHumidity(int humidity) {
-        this.humidity = humidity;
-        return this;
-    }
-
-    public BLESensorDataBuilder setPressure(int pressure) {
-        this.pressure = pressure;
         return this;
     }
 
     public BLESensorDataBuilder setDustRaw(int dustRaw) {
-        this.dustRaw = dustRaw;
+        if (this.dustValues.size() < 16) {
+            this.dustValues.add(dustRaw);
+        } else {
+            this.DUST_READY = true;
+        }
+
         return this;
     }
 
-    public int getMissingValuesCount() {
-        int counter = 0;
-        if (CORaw != null) {
-            counter++;
-        }
-        if (COCalibration != null) {
-            counter++;
-        }
-        if (NO2Raw != null) {
-            counter++;
-        }
-        if (NO2Calibration != null) {
-            counter++;
-        }
-        if (NH3Raw != null) {
-            counter++;
-        }
-        if (NH3Calibration != null) {
-            counter++;
-        }
-        if (temperature != null) {
-            counter++;
-        }
-        if (humidity != null) {
-            counter++;
-        }
-        if (pressure != null) {
-            counter++;
-        }
-        if (dustRaw != null) {
-            counter++;
+    public double buildDustValue() {
+        double result = BluetoothBroadcastReceiver.INVALID_VALUE;
+
+        if (this.dustValues.size() >= 15) {
+            int sum = 0;
+            for (Integer dustValue : this.dustValues) {
+                sum += dustValue;
+            }
+            result = 2.7 * (sum / dustValues.size()) - 220;
+
+            dustValues = new ArrayList<>();
+
+            this.DUST_READY = false;
         }
 
-        return counter;
+        return result;
     }
 
-    public BLESensorData build() {
-        if (CORaw != null && COCalibration != null
-                && NO2Raw != null && NO2Calibration != null
-                && NH3Raw != null && NH3Calibration != null
-                && temperature != null
-                && humidity != null
-                && pressure != null
-                && dustRaw != null) {
-            this.COValue = calculateRealValue(CORaw, COCalibration, temperature, 350, -1.179, 4.385);
-            this.NO2Value = calculateRealValue(NO2Raw, NO2Calibration, temperature, 1, 1.007, 0.145);
-            this.NH3Value = calculateRealValue(NH3Raw, NH3Calibration, temperature, 40, -1.67, 0.68);
+    public double buildCoValue() {
+        int result = BluetoothBroadcastReceiver.INVALID_VALUE;
 
-            return new BLESensorData(COValue, NO2Value, NH3Value, temperature, humidity, pressure, dustRaw);
+        if (CORaw != null && COCalibration != null && temperature != null) {
+            result = calculateRealValue(CORaw, COCalibration, temperature, 350, -1.179, 4.385);
+            CORaw = null;
+            COCalibration = null;
+            CO_READY = false;
         }
 
-        return null;
+        return result;
     }
 
-    private int calculateRealValue(Integer raw, Integer calibration, Integer temperature, int t, double a, double b) {
+    public double buildNo2Value() {
+        int result = BluetoothBroadcastReceiver.INVALID_VALUE;
+
+        if (NO2Raw != null && NO2Calibration != null && temperature != null) {
+            result = calculateRealValue(NO2Raw, NO2Calibration, temperature, 1, 1.007, 0.145);
+            NO2Raw = null;
+            NO2Calibration = null;
+            NO2_READY = false;
+        }
+
+        return result;
+    }
+
+    public double buildNh3Value() {
+        int result = BluetoothBroadcastReceiver.INVALID_VALUE;
+
+        if (NH3Raw != null && NH3Calibration != null && temperature != null) {
+            result = calculateRealValue(NH3Raw, NH3Calibration, temperature, 40, -1.67, 0.68);
+            NH3Raw = null;
+            NH3Calibration = null;
+            NH3_READY = false;
+        }
+
+        return result;
+    }
+
+    private int calculateRealValue(Integer raw, Integer calibration, Double temperature, int t, double a, double b) {
         double tmp = raw + (temperature - 25) * t;
         return (int) (Math.pow(tmp / calibration, a) * b);
     }

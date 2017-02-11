@@ -1,4 +1,4 @@
-package com.example.cnavo.teco_envble;
+package com.example.cnavo.teco_envble.ui;
 
 import android.bluetooth.BluetoothDevice;
 import android.support.annotation.NonNull;
@@ -9,17 +9,15 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import org.androidannotations.annotations.ViewById;
+import com.example.cnavo.teco_envble.R;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Christian on 09/02/17.
  */
-public class ConnectionListAdapter extends RecyclerView.Adapter<ConnectionListAdapter.ConnectionViewHolder>{
+public class ConnectionListAdapter extends RecyclerView.Adapter<ConnectionListAdapter.ConnectionViewHolder> {
 
     List<BluetoothDevice> items;
     ListButtonClickListener listButtonClickListener;

@@ -1,4 +1,4 @@
-package com.example.cnavo.teco_envble;
+package com.example.cnavo.teco_envble.ui;
 
 import android.bluetooth.BluetoothDevice;
 import android.view.View;

@@ -1,9 +1,11 @@
-package com.example.cnavo.teco_envble;
+package com.example.cnavo.teco_envble.ui;
 
 
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+
+import com.example.cnavo.teco_envble.R;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
@@ -39,4 +41,7 @@ public class GraphFragment extends Fragment {
         this.recyclerView.setAdapter(cardAdapter);
     }
 
+    public CardAdapter getAdapter() {
+        return this.cardAdapter;
+    }
 }

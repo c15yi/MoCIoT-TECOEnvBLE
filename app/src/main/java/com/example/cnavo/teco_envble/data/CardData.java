@@ -1,10 +1,11 @@
 package com.example.cnavo.teco_envble.data;
 
-import android.support.annotation.Nullable;
-
-import com.jjoe64.graphview.GraphView;
+import com.example.cnavo.teco_envble.service.DataChangeListener;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by cnavo on 08.02.2017.
@@ -12,23 +13,45 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 
 public class CardData {
 
-    private String caption;
-    private String status;
-    private DataPoint[] dataPoints;
+    private List<DataChangeListener> dataChangeListeners;
 
-    public CardData(String caption, String status, @Nullable DataPoint[] dataPoints) {
-        if (dataPoints == null) {
-            this.dataPoints = new DataPoint[0];
-        } else {
-            this.dataPoints = dataPoints;
+    private final String description;
+    private String status;
+    private LineGraphSeries<DataPoint> series;
+    private int minX = 0;
+    private int maxX;
+
+    public int getMinX() {
+        return minX;
+    }
+
+    public int getMaxX() {
+        return maxX;
+    }
+
+    public double getMinY() {
+        return minY;
+    }
+
+    public double getMaxY() {
+        return maxY;
+    }
+
+    private double minY;
+    private double maxY;
+
+    public CardData(String description, String status) {
+        if (series == null) {
+            this.series = new LineGraphSeries<DataPoint>();
         }
 
-        this.caption = caption;
+        this.dataChangeListeners = new ArrayList<>();
+        this.description = description;
         this.status = status;
     }
 
-    public String getCaption() {
-        return this.caption;
+    public String getDescription() {
+        return this.description;
     }
 
     public String getStatus() {
@@ -36,7 +59,49 @@ public class CardData {
     }
 
     public LineGraphSeries<DataPoint> getSeries() {
-        return new LineGraphSeries<>(this.dataPoints);
+        return this.series;
     }
+
+    public void setStatus(String status) {
+        this.status = status;
+        onItemChanged();
+    }
+
+    public void addDataPoint(DataPoint dataPoint, boolean save) {
+        this.series.appendData(dataPoint, true, 100);
+        if (dataPoint.getY() > maxY) {
+            this.maxY = dataPoint.getY();
+        } else if (dataPoint.getY() < minY) {
+            this.minY = dataPoint.getY();
+        }
+
+        this.maxX++;
+
+        onItemChanged();
+        if (save) {
+            onValueAdded(dataPoint);
+        }
+    }
+
+    public void setDataChangeListener(DataChangeListener dataChangeListener) {
+        this.dataChangeListeners.add(dataChangeListener);
+    }
+
+    private void onItemChanged() {
+        if (this.dataChangeListeners != null) {
+            for (DataChangeListener dataChangeListener : this.dataChangeListeners) {
+                dataChangeListener.onItemChanged(this);
+            }
+        }
+    }
+
+    private void onValueAdded(DataPoint dataPoint) {
+        if (this.dataChangeListeners != null) {
+            for (DataChangeListener dataChangeListener : this.dataChangeListeners) {
+                dataChangeListener.onValueAdded(description, dataPoint);
+            }
+        }
+    }
+
 
 }
